@@ -27,6 +27,15 @@ struct ContentView: UIViewRepresentable {
 	
 	func updateUIView(_ uiView: WKWebView, context: Context) {
 		g.webView = uiView;
+		
+		var nostlanJS:String = "";
+		do {
+			let path = Bundle.main.path(forResource: "nostlan-ios", ofType: "js");
+			nostlanJS = try String(contentsOfFile: path!);
+		} catch {
+			print("nostlan-ios.js could not be loaded");
+		}
+		
 		// Set up our key-value observer - we're checking for WKWebView.title changes here
 		// which indicates a new page has loaded.
 		g.observation = g.webView.observe(\WKWebView.title, options: .new) {
@@ -35,24 +44,25 @@ struct ContentView: UIViewRepresentable {
 			if title != "" {
 				self.g.loggedIn = true; // We loaded the page
 				print("Page loaded: \(title)");
-				self.g.webView.evaluateJavaScript("console.log('page loaded: \(title)')", completionHandler: nil);
+				self.g.webView.evaluateJavaScript("console.log('page loaded: \(title)');" + nostlanJS, completionHandler: nil);
 			}
 		}
 		g.webView.load(pageURL); // Send the command to WKWebView to load our page
 		
+		
 		NotificationCenter.default.addObserver(self, selector: Selector(("connectControllers")), name: NSNotification.Name.GCControllerDidConnect, object: nil);
 		NotificationCenter.default.addObserver(self, selector: Selector(("disconnectControllers")), name: NSNotification.Name.GCControllerDidDisconnect, object: nil);
+		
+		connectControllers();
 	}
 	
 	// This Function is called when a controller is connected
 	func connectControllers() {
-		print("controller connected!");
-		// TODO Unpause the Game if it is currently paused
-		//	self.isPaused = false;
-		//Used to register the Nimbus Controllers to a specific Player Number
+		// Used to register the Nimbus Controllers to a specific Player Number
 		var indexNumber = 0;
 		// Run through each controller currently connected to the system
 		for controller in GCController.controllers() {
+			print("controller connected!");
 			//Check to see whether it is an extended Game Controller (Such as a Nimbus)
 			if controller.extendedGamepad != nil {
 				controller.playerIndex = GCControllerPlayerIndex.init(rawValue: indexNumber)!;
@@ -62,10 +72,8 @@ struct ContentView: UIViewRepresentable {
 		}
 	}
 	
-	// Function called when a controller is disconnected from the Apple TV
+	// Function called when a controller is disconnected
 	func disconnectControllers() {
-		// TODO Pause the Game if a controller is disconnected ~ This is mandated by Apple
-		//	self.isPaused = true;
 	}
 	
 	func setupControllerControls(controller: GCController) {
@@ -78,54 +86,38 @@ struct ContentView: UIViewRepresentable {
 	}
 	
 	func controllerInputDetected(gamepad: GCExtendedGamepad, element: GCControllerElement, index: Int) {
-		//		if (gamepad.leftThumbstick == element) {
-		//			if (gamepad.leftThumbstick.xAxis.value != 0) {
-		//				print("Controller: \(index), LeftThumbstickXAxis: \(gamepad.leftThumbstick.xAxis)");
-		//			} else if (gamepad.leftThumbstick.xAxis.value == 0) {
-		//				// YOU CAN PUT CODE HERE TO STOP YOUR PLAYER FROM MOVING
-		//
-		//			}
-		//		}
-		//		if (gamepad.rightThumbstick == element) {
-		//			if (gamepad.rightThumbstick.xAxis.value != 0) {
-		//				print("Controller: \(index), rightThumbstickXAxis: \(gamepad.rightThumbstick.xAxis)");
-		//			}
-		//		} else if (gamepad.dpad == element) {
-		//			if (gamepad.dpad.xAxis.value != 0) {
-		//				print("Controller: \(index), D-PadXAxis: \(gamepad.rightThumbstick.xAxis)");
-		//
-		//			} else if (gamepad.dpad.xAxis.value == 0){
-		//				// YOU CAN PUT CODE HERE TO STOP YOUR PLAYER FROM MOVING
-		//			}
-		//		} else
-		
-		if (gamepad.buttonA == element) {
-			if (gamepad.buttonA.value != 0) {
-				print("Controller: \(index), A-Button Pressed!");
+		if (gamepad.leftThumbstick == element) {
+			if (gamepad.leftThumbstick.xAxis.value != 0) {
+				print("Controller: \(index), LeftThumbstickXAxis: \(gamepad.leftThumbstick.xAxis)");
+			} else if (gamepad.leftThumbstick.xAxis.value == 0) {
+				// YOU CAN PUT CODE HERE TO STOP YOUR PLAYER FROM MOVING
 				
-				// eval javascript here
-				// alert('a pressed!');
-				g.webView.evaluateJavaScript("alert('a pressed!')",
-																	 completionHandler: nil);
 			}
-		} else if (gamepad.buttonB == element) {
-			if (gamepad.buttonB.value != 0) {
-				print("Controller: \(index), B-Button Pressed!");
-				g.webView.evaluateJavaScript("alert('b pressed!')",
-				completionHandler: nil);
+		} else if (gamepad.rightThumbstick == element) {
+			if (gamepad.rightThumbstick.xAxis.value != 0) {
+				print("Controller: \(index), rightThumbstickXAxis: \(gamepad.rightThumbstick.xAxis)");
 			}
-		} else if (gamepad.buttonY == element) {
-			if (gamepad.buttonY.value != 0) {
-				print("Controller: \(index), Y-Button Pressed!");
-				g.webView.evaluateJavaScript("alert('y pressed!')",
-				completionHandler: nil);
+		} else if (gamepad.dpad == element) {
+			if (gamepad.dpad.xAxis.value != 0) {
+				print("Controller: \(index), D-PadXAxis: \(gamepad.rightThumbstick.xAxis)");
+				
+			} else if (gamepad.dpad.xAxis.value == 0){
+				// YOU CAN PUT CODE HERE TO STOP YOUR PLAYER FROM MOVING
 			}
-		} else if (gamepad.buttonX == element) {
-			if (gamepad.buttonX.value != 0) {
-				print("Controller: \(index), X-Button Pressed!");
-				g.webView.evaluateJavaScript("alert('x pressed!')",
-				completionHandler: nil);
-			}
+		} else if (element == gamepad.buttonA) {
+			print("a button pressed: \(gamepad.buttonA.value)");
+			g.webView.evaluateJavaScript("nostlan.button('a', \(gamepad.buttonB.value));", completionHandler: nil);
+		} else if (element == gamepad.buttonB) {
+			print("b button pressed: \(gamepad.buttonB.value)");
+			g.webView.evaluateJavaScript("nostlan.button('b', \(gamepad.buttonB.value));", completionHandler: nil);
+		} else if (element == gamepad.buttonX) {
+			g.webView.evaluateJavaScript("nostlan.button('x', \(gamepad.buttonX.value));", completionHandler: nil);
+		} else if (element == gamepad.buttonY) {
+			g.webView.evaluateJavaScript("nostlan.button('y', \(gamepad.buttonY.value));", completionHandler: nil);
+		} else if (element == gamepad.buttonMenu) {
+			g.webView.evaluateJavaScript("nostlan.button('start', \(gamepad.buttonMenu.value));", completionHandler: nil);
+		} else if (element == gamepad.buttonOptions) {
+			g.webView.evaluateJavaScript("nostlan.button('select', \(String(describing: gamepad.buttonOptions?.value)));", completionHandler: nil);
 		}
 	}
 }

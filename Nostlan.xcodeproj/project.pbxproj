@@ -13,6 +13,7 @@
 		F64FE225242268F6007B2E4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F64FE224242268F6007B2E4E /* Assets.xcassets */; };
 		F64FE228242268F6007B2E4E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F64FE227242268F6007B2E4E /* Preview Assets.xcassets */; };
 		F64FE22B242268F6007B2E4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F64FE229242268F6007B2E4E /* LaunchScreen.storyboard */; };
+		F67DE52C2431788B004EC51A /* nostlan-ios.js in Resources */ = {isa = PBXBuildFile; fileRef = F67DE52B2431788B004EC51A /* nostlan-ios.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		F64FE227242268F6007B2E4E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F64FE22A242268F6007B2E4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F64FE22C242268F6007B2E4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F67DE52B2431788B004EC51A /* nostlan-ios.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "nostlan-ios.js"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				F64FE229242268F6007B2E4E /* LaunchScreen.storyboard */,
 				F64FE22C242268F6007B2E4E /* Info.plist */,
 				F64FE226242268F6007B2E4E /* Preview Content */,
+				F67DE52B2431788B004EC51A /* nostlan-ios.js */,
 			);
 			path = Nostlan;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			files = (
 				F64FE22B242268F6007B2E4E /* LaunchScreen.storyboard in Resources */,
 				F64FE228242268F6007B2E4E /* Preview Assets.xcassets in Resources */,
+				F67DE52C2431788B004EC51A /* nostlan-ios.js in Resources */,
 				F64FE225242268F6007B2E4E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
