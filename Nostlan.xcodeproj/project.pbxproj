@@ -293,6 +293,7 @@
 				DEVELOPMENT_TEAM = 694UE597PK;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Nostlan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qashto.Nostlan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -310,6 +311,7 @@
 				DEVELOPMENT_TEAM = 694UE597PK;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Nostlan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qashto.Nostlan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
