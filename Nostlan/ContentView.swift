@@ -100,7 +100,6 @@ struct ContentView: UIViewRepresentable {
 			print("p\(p) rightStick x:\(gamepad.rightThumbstick.xAxis.value) y:\(gamepad.rightThumbstick.yAxis.value)");
 			g.webView.evaluateJavaScript("nostlan.stick(\(p), 'rightStick', \(gamepad.rightThumbstick.xAxis.value), \(gamepad.rightThumbstick.yAxis.value));", completionHandler: nil);
 		} else if (gamepad.dpad == element) {
-			print("p\(p), dpad x:\(gamepad.dpad.xAxis.value) y:\(gamepad.dpad.yAxis.value)");
 			var direction:String = "";
 			if (gamepad.dpad.yAxis.value == 1) {
 				direction = "up";
@@ -123,11 +122,11 @@ struct ContentView: UIViewRepresentable {
 			} else {
 				direction = "nuetral";
 			}
-			print("p\(p), dpad direction: \(direction)");
+			print("p\(p) dpad x:\(gamepad.dpad.xAxis.value) y:\(gamepad.dpad.yAxis.value) direction: \(direction)");
 			g.webView.evaluateJavaScript("nostlan.dpad(\(p), '\(direction)');", completionHandler: nil);
 		} else if (element == gamepad.buttonA) {
 			print("p\(p) a button pressed: \(gamepad.buttonA.value)");
-			g.webView.evaluateJavaScript("nostlan.button(\(p), 'a', \(gamepad.buttonB.value));", completionHandler: nil);
+			g.webView.evaluateJavaScript("nostlan.button(\(p), 'a', \(gamepad.buttonA.value));", completionHandler: nil);
 		} else if (element == gamepad.buttonB) {
 			print("p\(p) b button pressed: \(gamepad.buttonB.value)");
 			g.webView.evaluateJavaScript("nostlan.button(\(p), 'b', \(gamepad.buttonB.value));", completionHandler: nil);

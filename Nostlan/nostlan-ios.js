@@ -1,13 +1,3 @@
-// ==UserScript==
-// @name         HTML Gamepad Spoof
-// @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  HTML Gamepad Spoof
-// @author       qashto
-// @match        *://*/*
-// @grant        none
-// ==/UserScript==
-
 (function() {
 	const log = console.log;
 	const startTime = performance.now();
