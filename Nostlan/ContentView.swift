@@ -47,7 +47,6 @@ struct ContentView: UIViewRepresentable {
 		}
 		g.webView.load(pageURL); // Send the command to WKWebView to load our page
 		
-		
 		NotificationCenter.default.addObserver(self, selector: Selector(("connectControllers")), name: NSNotification.Name.GCControllerDidConnect, object: nil);
 		NotificationCenter.default.addObserver(self, selector: Selector(("disconnectControllers")), name: NSNotification.Name.GCControllerDidDisconnect, object: nil);
 		
@@ -100,11 +99,11 @@ struct ContentView: UIViewRepresentable {
 			print("p\(p) rightStick x:\(gamepad.rightThumbstick.xAxis.value) y:\(gamepad.rightThumbstick.yAxis.value)");
 			g.webView.evaluateJavaScript("nostlan.stick(\(p), 'rightStick', \(gamepad.rightThumbstick.xAxis.value), \(gamepad.rightThumbstick.yAxis.value));", completionHandler: nil);
 		} else if (element == gamepad.leftThumbstickButton) {
-			print("p\(p) leftStickBtn pressed: \(gamepad.leftThumbstickButton!.isPressed ? 1:0)");
-			g.webView.evaluateJavaScript("nostlan.button(\(p), 'leftStickBtn', \(gamepad.leftThumbstickButton!.isPressed ? 1:0));", completionHandler: nil);
+			print("p\(p) leftStickBtn pressed: \(gamepad.leftThumbstickButton!.value)");
+			g.webView.evaluateJavaScript("nostlan.button(\(p), 'leftStickBtn', \(gamepad.leftThumbstickButton!.value));", completionHandler: nil);
 		} else if (element == gamepad.rightThumbstickButton) {
-			print("p\(p) rightStickBtn pressed: \(gamepad.rightThumbstickButton!.isPressed ? 1:0)");
-			g.webView.evaluateJavaScript("nostlan.button(\(p), 'rightStickBtn', \(gamepad.rightThumbstickButton!.isPressed ? 1:0));", completionHandler: nil);
+			print("p\(p) rightStickBtn pressed: \(gamepad.rightThumbstickButton!.value)");
+			g.webView.evaluateJavaScript("nostlan.button(\(p), 'rightStickBtn', \(gamepad.rightThumbstickButton!.value));", completionHandler: nil);
 		} else if (gamepad.dpad == element) {
 			var direction:String = "";
 			if (gamepad.dpad.yAxis.value == 1) {
@@ -143,11 +142,11 @@ struct ContentView: UIViewRepresentable {
 			print("p\(p) y button pressed: \(gamepad.buttonY.value)");
 			g.webView.evaluateJavaScript("nostlan.button(\(p), 'y', \(gamepad.buttonY.value));", completionHandler: nil);
 		} else if (element == gamepad.leftShoulder) {
-			print("p\(p) l button pressed: \(gamepad.leftShoulder.isPressed ? 1:0)");
-			g.webView.evaluateJavaScript("nostlan.button(\(p), 'l', \(gamepad.leftShoulder.isPressed ? 1:0));", completionHandler: nil);
+			print("p\(p) l button pressed: \(gamepad.leftShoulder.value)");
+			g.webView.evaluateJavaScript("nostlan.button(\(p), 'l', \(gamepad.leftShoulder.value));", completionHandler: nil);
 		} else if (element == gamepad.rightShoulder) {
-			print("p\(p) r button pressed: \(gamepad.rightShoulder.isPressed ? 1:0)");
-			g.webView.evaluateJavaScript("nostlan.button(\(p), 'r', \(gamepad.rightShoulder.isPressed ? 1:0));", completionHandler: nil);
+			print("p\(p) r button pressed: \(gamepad.rightShoulder.value)");
+			g.webView.evaluateJavaScript("nostlan.button(\(p), 'r', \(gamepad.rightShoulder.value));", completionHandler: nil);
 		} else if (element == gamepad.leftTrigger) {
 			print("p\(p) leftTrigger: \(gamepad.leftTrigger.value)");
 			g.webView.evaluateJavaScript("nostlan.trigger(\(p), 'leftTrigger', \(gamepad.leftTrigger.value));", completionHandler: nil);

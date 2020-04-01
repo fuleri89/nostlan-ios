@@ -1,3 +1,14 @@
+/*
+ * nostlan-ios.js : Nostlan for iOS : quinton-ashley
+ *
+ * Custom html5 gamepad implementation for iOS Safari.
+ *
+ * This implementation achieves compatibility with web based games by
+ * overriding `navigator.getGamepads()` to make it return custom Gamepad
+ * objects via the class NostlanGamepad (I had to do this because
+ * Gamepad objects are read only).
+ * https://developer.mozilla.org/en-US/docs/Web/API/Gamepad
+ */
 (function() {
 	const log = console.log;
 	const startTime = performance.now();
@@ -138,7 +149,7 @@
 
 		addGamepad(p, type) {
 			// p for player
-			// type can be xbox or ps (playstation)
+			// type can be xbox or playstation
 			log(`adding gamepad idx: ${p} type: ${type}`);
 			this.gamepads[p] = new NostlanGamepad(p, type);
 		}
@@ -153,13 +164,18 @@
 		}
 
 		button(p, name, val) {
-			val = (val) ? true : false; // convert to boolean
 			log(`p${p} ${name} btn ${(val)?'pressed':'released'}`);
 			let btn = this.btns[name];
+			// touched isn't supported in iOS Safari rn but
+			// I put it anyway for possible future proofing
+			// cause it's included in the latest Firefox 74
+			// this hypothetically could provide support
+			// for gamecube controller light button presses
+			// used in games like SSB Melee to short hop with x
 			nostlan.gamepads[p].buttons[btn] = {
-				pressed: val,
-				touched: val,
-				value: (val) ? 1 : 0
+				pressed: (val > .9) ? true : false,
+				touched: (val > 0) ? true : false,
+				value: val
 			};
 			this.updateTimestamp(p);
 		}
@@ -228,10 +244,51 @@
 	window.addEventListener('DOMContentLoaded', (event) => {
 		log('DOM fully loaded and parsed');
 
+		function injectCSS(styles) {
+			let styleSheet = document.createElement("style");
+			styleSheet.type = "text/css";
+			styleSheet.innerHTML = styles;
+			document.head.appendChild(styleSheet);
+		}
+
 		// https://jsnes.org/
-		let elems = document.getElementsByClassName('mb-3');
-		if (elems) {
-			elems[0].innerHTML = 'JSNES+Nostlan';
+		if (window.location.hostname == 'jsnes.org') {
+			let elems = document.getElementsByClassName('mb-3');
+			if (elems) {
+				elems[0].innerHTML = 'JSNES+Nostlan';
+			}
+
+			let styles = `
+.fullscreen .navbar {
+  display: none;
+}
+
+.fullscreen .screen-container {
+  width: 100vw!important;
+  height: 100vh!important;
+}
+
+.fullscreen .Screen {
+  width: unset!important;
+  height: 100vh!important;
+  transform: scale(1.07);
+}
+`;
+			injectCSS(styles);
+
+			function onResize() {
+				let w = document.body.clientWidth;
+				let h = document.body.clientHeight;
+				if (w >= h) {
+					log(`phone flipped horizontally w: ${w} h: ${h}`);
+					document.getElementById('root').className = 'fullscreen';
+				} else {
+					log(`phone flipped vertically w: ${w} h: ${h}`);
+					document.getElementById('root').className = '';
+				}
+			}
+
+			window.addEventListener('resize', onResize);
 		}
 
 	});
