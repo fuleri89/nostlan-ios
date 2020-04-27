@@ -14,8 +14,8 @@ Nostlan for iOS uses the new SwiftUI framework. When a web page is loaded I use 
 
 ### Possible Issues
 
-Should support PS4 controllers and multiple controllers but I haven't personally confirmed it.
+Should support PS4 controllers and using multiple controllers at the same time but I haven't personally confirmed it.
 
 ### Know Issues
 
-Doesn't work on sites (codepen for example) that accept controller input in an iframe.
+Doesn't work on sites (codepen for example) that only accept controller input in an iframe.
